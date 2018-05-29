@@ -42,6 +42,12 @@ type GetWorkResp struct {
 	Seed        *bc.Hash           `json:"seed"`
 }
 
+// GetWorkRespJson is resp struct for API
+type GetWorkJsonResp struct {
+	BlockHeaderJson *types.BlockHeaderJson 	`json:"block_header"`
+	Seed        	*bc.Hash           		`json:"seed"`
+}
+
 // GetWork get work
 func (a *API) GetWork() (*GetWorkResp, error) {
 	bh, err := a.miningPool.GetWork()
@@ -61,20 +67,20 @@ func (a *API) GetWork() (*GetWorkResp, error) {
 }
 
 // GetWorkJson get work json
-func (a *API) GetWorkJson() (*GetWorkResp, error) {
-	bh, err := a.miningPool.GetWorkJson()
+func (a *API) GetWorkJson() (*GetWorkJsonResp, error) {
+	bhj, err := a.miningPool.GetWorkJson()
 	if err != nil {
 		return nil, err
 	}
 
-	seed, err := a.chain.CalcNextSeed(&bh.PreviousBlockHash)
+	seed, err := a.chain.CalcNextSeed(&bhj.PreviousBlockHash)
 	if err != nil {
 		return nil, err
 	}
 
-	return &GetWorkResp{
-		BlockHeader: bh,
-		Seed:        seed,
+	return &GetWorkJsonResp{
+		BlockHeaderJson: 	bhj,
+		Seed:        		seed,
 	}, nil
 }
 

@@ -101,8 +101,8 @@ func (m *MiningPool) GetWorkJson() (*types.BlockHeaderJson, error) {
 		m.mutex.RLock()
 		defer m.mutex.RUnlock()
 		bh := m.block.BlockHeader
-		bhj := bh.
-		return &bhj, nil
+		bhj := bh.ToJson()
+		return bhj, nil
 	}
 	return nil, errors.New("no block is ready for mining")
 }

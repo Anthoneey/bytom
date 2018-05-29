@@ -34,8 +34,8 @@ type BlockHeaderJson struct {
 	BlockCommitment
 }
 
-// CopyFrom copys a BlockHeader-type var to a BlockHeaderJson-type var.
-func (bhj *BlockHeaderJson) CopyFrom(bh *BlockHeader) {
+// TODO
+func (bh *BlockHeader) ToJson() (bhj *BlockHeaderJson) {
 	bhj.Version = bh.Version
 	bhj.Height = bh.Height
 	bhj.PreviousBlockHash = bh.PreviousBlockHash
@@ -43,7 +43,7 @@ func (bhj *BlockHeaderJson) CopyFrom(bh *BlockHeader) {
 	bhj.Nonce = bh.Nonce
 	bhj.Bits = bh.Bits
 	bhj.BlockCommitment = bh.BlockCommitment
-	return
+	return bhj
 }
 
 // Time returns the time represented by the Timestamp in block header.
