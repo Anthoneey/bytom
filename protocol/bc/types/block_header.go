@@ -34,6 +34,12 @@ type BlockHeaderJson struct {
 	BlockCommitment
 }
 
+// CopyFrom copys a BlockHeader-type var to a BlockHeaderJson-type var.
+func (bhj *BlockHeaderJson) CopyFrom(bh *BlockHeader) {
+	
+	return
+}
+
 // Time returns the time represented by the Timestamp in block header.
 func (bh *BlockHeader) Time() time.Time {
 	return time.Unix(int64(bh.Timestamp), 0).UTC()
@@ -61,21 +67,21 @@ func (bh *BlockHeader) MarshalText() ([]byte, error) {
 	return enc, nil
 }
 
-// MarshalText fulfills the json.Marshaler interface. This guarantees that
+// MarshalTextForStore fulfills the json.Marshaler interface. This guarantees that
 // block headers will get deserialized correctly when being parsed from HTTP
 // requests.
-func (bh *BlockHeader) MarshalTextForStore() ([]byte, error) {
-	buf := bufpool.Get()
-	defer bufpool.Put(buf)
+// func (bh *BlockHeader) MarshalTextForStore() ([]byte, error) {
+// 	buf := bufpool.Get()
+// 	defer bufpool.Put(buf)
 
-	if _, err := bh.WriteTo(buf); err != nil {
-		return nil, err
-	}
+// 	if _, err := bh.WriteTo(buf); err != nil {
+// 		return nil, err
+// 	}
 
-	enc := make([]byte, hex.EncodedLen(buf.Len()))
-	hex.Encode(enc, buf.Bytes())
-	return enc, nil
-}
+// 	enc := make([]byte, hex.EncodedLen(buf.Len()))
+// 	hex.Encode(enc, buf.Bytes())
+// 	return enc, nil
+// }
 
 // UnmarshalText fulfills the encoding.TextUnmarshaler interface.
 func (bh *BlockHeader) UnmarshalText(text []byte) error {
@@ -88,16 +94,16 @@ func (bh *BlockHeader) UnmarshalText(text []byte) error {
 	return err
 }
 
-// UnmarshalText fulfills the encoding.TextUnmarshaler interface.
-func (bh *BlockHeader) UnmarshalTextForStore(text []byte) error {
-	decoded := make([]byte, hex.DecodedLen(len(text)))
-	if _, err := hex.Decode(decoded, text); err != nil {
-		return err
-	}
+// UnmarshalTextForStore fulfills the encoding.TextUnmarshaler interface.
+// func (bh *BlockHeader) UnmarshalTextForStore(text []byte) error {
+// 	decoded := make([]byte, hex.DecodedLen(len(text)))
+// 	if _, err := hex.Decode(decoded, text); err != nil {
+// 		return err
+// 	}
 
-	_, err := bh.readFrom(blockchain.NewReader(decoded))
-	return err
-}
+// 	_, err := bh.readFrom(blockchain.NewReader(decoded))
+// 	return err
+// }
 
 func (bh *BlockHeader) readFrom(r *blockchain.Reader) (serflag uint8, err error) {
 	var serflags [1]byte

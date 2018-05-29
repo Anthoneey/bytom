@@ -96,12 +96,13 @@ func (m *MiningPool) GetWork() (*types.BlockHeader, error) {
 }
 
 // GetWorkJson will return a block header for p2p mining in json format
-func (m *MiningPool) GetWorkJson() (*types.BlockHeader, error) {
+func (m *MiningPool) GetWorkJson() (*types.BlockHeaderJson, error) {
 	if m.block != nil {
 		m.mutex.RLock()
 		defer m.mutex.RUnlock()
 		bh := m.block.BlockHeader
-		return &bh, nil
+		bhj := bh.
+		return &bhj, nil
 	}
 	return nil, errors.New("no block is ready for mining")
 }

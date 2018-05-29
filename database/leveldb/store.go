@@ -131,7 +131,6 @@ func (s *Store) LoadBlockIndex() (*state.BlockIndex, error) {
 	for bhIter.Next() {
 		bh := &types.BlockHeader{}
 		if err := bh.UnmarshalText(bhIter.Value()); err != nil {
-		// if err := bh.UnmarshalTextForStore(bhIter.Value()); err != nil {
 			return nil, err
 		}
 
@@ -162,7 +161,6 @@ func (s *Store) SaveBlock(block *types.Block, ts *bc.TransactionStatus) error {
 	}
 
 	binaryBlockHeader, err := block.BlockHeader.MarshalText()
-	// binaryBlockHeader, err := block.BlockHeader.MarshalTextForStore()
 	if err != nil {
 		return errors.Wrap(err, "Marshal block header")
 	}
