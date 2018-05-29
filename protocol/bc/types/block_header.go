@@ -36,7 +36,13 @@ type BlockHeaderJson struct {
 
 // CopyFrom copys a BlockHeader-type var to a BlockHeaderJson-type var.
 func (bhj *BlockHeaderJson) CopyFrom(bh *BlockHeader) {
-	
+	bhj.Version = bh.Version
+	bhj.Height = bh.Height
+	bhj.PreviousBlockHash = bh.PreviousBlockHash
+	bhj.Timestamp = bh.Timestamp
+	bhj.Nonce = bh.Nonce
+	bhj.Bits = bh.Bits
+	bhj.BlockCommitment = bh.BlockCommitment
 	return
 }
 
