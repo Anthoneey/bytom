@@ -16,6 +16,14 @@ func (a *API) getWork() Response {
 	return NewSuccessResponse(work)
 }
 
+func (a *API) getWorkJson() Response {
+	work, err := a.GetWorkJson()
+	if err != nil {
+		return NewErrorResponse(err)
+	}
+	return NewSuccessResponse(work)
+}
+
 // SubmitWorkReq used to submitWork req
 type SubmitWorkReq struct {
 	BlockHeader *types.BlockHeader `json:"block_header"`
@@ -37,6 +45,24 @@ type GetWorkResp struct {
 // GetWork get work
 func (a *API) GetWork() (*GetWorkResp, error) {
 	bh, err := a.miningPool.GetWork()
+	if err != nil {
+		return nil, err
+	}
+
+	seed, err := a.chain.CalcNextSeed(&bh.PreviousBlockHash)
+	if err != nil {
+		return nil, err
+	}
+
+	return &GetWorkResp{
+		BlockHeader: bh,
+		Seed:        seed,
+	}, nil
+}
+
+// GetWorkJson get work json
+func (a *API) GetWorkJson() (*GetWorkResp, error) {
+	bh, err := a.miningPool.GetWorkJson()
 	if err != nil {
 		return nil, err
 	}

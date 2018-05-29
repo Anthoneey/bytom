@@ -48,7 +48,22 @@ func (bh *BlockHeader) Hash() bc.Hash {
 // MarshalText fulfills the json.Marshaler interface. This guarantees that
 // block headers will get deserialized correctly when being parsed from HTTP
 // requests.
-// func (bh *BlockHeader) MarshalText() ([]byte, error) {
+func (bh *BlockHeader) MarshalText() ([]byte, error) {
+	buf := bufpool.Get()
+	defer bufpool.Put(buf)
+
+	if _, err := bh.WriteTo(buf); err != nil {
+		return nil, err
+	}
+
+	enc := make([]byte, hex.EncodedLen(buf.Len()))
+	hex.Encode(enc, buf.Bytes())
+	return enc, nil
+}
+
+// MarshalText fulfills the json.Marshaler interface. This guarantees that
+// block headers will get deserialized correctly when being parsed from HTTP
+// requests.
 func (bh *BlockHeader) MarshalTextForStore() ([]byte, error) {
 	buf := bufpool.Get()
 	defer bufpool.Put(buf)
@@ -63,7 +78,17 @@ func (bh *BlockHeader) MarshalTextForStore() ([]byte, error) {
 }
 
 // UnmarshalText fulfills the encoding.TextUnmarshaler interface.
-// func (bh *BlockHeader) UnmarshalText(text []byte) error {
+func (bh *BlockHeader) UnmarshalText(text []byte) error {
+	decoded := make([]byte, hex.DecodedLen(len(text)))
+	if _, err := hex.Decode(decoded, text); err != nil {
+		return err
+	}
+
+	_, err := bh.readFrom(blockchain.NewReader(decoded))
+	return err
+}
+
+// UnmarshalText fulfills the encoding.TextUnmarshaler interface.
 func (bh *BlockHeader) UnmarshalTextForStore(text []byte) error {
 	decoded := make([]byte, hex.DecodedLen(len(text)))
 	if _, err := hex.Decode(decoded, text); err != nil {

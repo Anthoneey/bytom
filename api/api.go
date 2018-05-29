@@ -232,7 +232,9 @@ func (a *API) buildHandler() {
 	m.Handle("/set-mining", jsonHandler(a.setMining))
 
 	m.Handle("/get-work", jsonHandler(a.getWork))
+	m.Handle("/get-work-json", jsonHandler(a.getWorkJson)) // TODO: consider to combining it with /get-work
 	m.Handle("/submit-work", jsonHandler(a.submitWork))
+	m.Handle("/submit-work-json", jsonHandler(a.submitWork)) // TODO: consider combining it with /get-work
 
 	m.Handle("/verify-message", jsonHandler(a.verifyMessage))
 	m.Handle("/decode-program", jsonHandler(a.decodeProgram))

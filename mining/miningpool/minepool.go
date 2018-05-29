@@ -95,6 +95,17 @@ func (m *MiningPool) GetWork() (*types.BlockHeader, error) {
 	return nil, errors.New("no block is ready for mining")
 }
 
+// GetWorkJson will return a block header for p2p mining in json format
+func (m *MiningPool) GetWorkJson() (*types.BlockHeader, error) {
+	if m.block != nil {
+		m.mutex.RLock()
+		defer m.mutex.RUnlock()
+		bh := m.block.BlockHeader
+		return &bh, nil
+	}
+	return nil, errors.New("no block is ready for mining")
+}
+
 // SubmitWork will try to submit the result to the blockchain
 func (m *MiningPool) SubmitWork(bh *types.BlockHeader) error {
 	reply := make(chan error, 1)
