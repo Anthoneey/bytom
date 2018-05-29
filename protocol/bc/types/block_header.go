@@ -25,18 +25,24 @@ type BlockHeader struct {
 
 // BlockHeader defines information about a block and is used in the Bytom
 type BlockHeaderJson struct {
-	Version           uint64  // The version of the block.
-	Height            uint64  // The height of the block.
-	PreviousBlockHash bc.Hash // The hash of the previous block.
-	Timestamp         uint64  // The time of the block in seconds.
-	Nonce             uint64  // Nonce used to generate the block.
-	Bits              uint64  // Difficulty target for the block.
+	Version           uint64  `json:"version"` // The version of the block.
+	Height            uint64  `json:"height"` // The height of the block.
+	PreviousBlockHash bc.Hash `json:"previous_block_hash"` // The hash of the previous block.
+	Timestamp         uint64  `json:"timestamp"` // The time of the block in seconds.
+	Nonce             uint64  `json:"nonce"` // Nonce used to generate the block.
+	Bits              uint64  `json:"bits"` // Difficulty target for the block.
 	BlockCommitment
 }
 
 // CopyFrom copys a BlockHeader-type var to a BlockHeaderJson-type var.
 func (bhj *BlockHeaderJson) CopyFrom(bh *BlockHeader) {
-	
+	bhj.Version = bh.Version
+	bhj.Height = bh.Height
+	bhj.PreviousBlockHash = bh.PreviousBlockHash
+	bhj.Timestamp = bh.Timestamp
+	bhj.Nonce = bh.Nonce
+	bhj.Bits = bh.Bits
+	bhj.BlockCommitment = bh.BlockCommitment
 	return
 }
 
