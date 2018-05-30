@@ -24,6 +24,7 @@ func (a *API) getWorkJson() Response {
 	return NewSuccessResponse(work)
 }
 
+
 // SubmitWorkReq used to submitWork req
 type SubmitWorkReq struct {
 	BlockHeader *types.BlockHeader `json:"block_header"`
