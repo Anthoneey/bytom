@@ -1,2 +1,4 @@
 make bytomd
-cmd/bytomd/bytomd node
+rm ./solonet -rf
+cmd/bytomd/bytomd init --chain_id solonet -r "./solonet"
+cmd/bytomd/bytomd node  -r "./solonet"
