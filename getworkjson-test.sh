@@ -1,2 +1,2 @@
 make bytomd
-./cmd/bytomd/bytomd node
+./cmd/bytomd/bytomd node --web.closed

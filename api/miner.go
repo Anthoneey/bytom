@@ -8,7 +8,17 @@ import (
 	"github.com/bytom/protocol/bc/types"
 )
 
-func (a *API) getWork() Response {
+// SubmitWorkReq used to submitWork req
+type GetWorkReq struct {
+	UseJson bool `json:"use_json,omitempty"`
+}
+
+// func (a *API) getWork(ctx context.Context, req *GetWorkReq) Response {
+func (a *API) getWork(in ...interface{}) Response {
+	if len(in)>0 {
+		panic("fffffffffffffffffffffffffffffffffk")
+	}
+
 	work, err := a.GetWork()
 	if err != nil {
 		return NewErrorResponse(err)
